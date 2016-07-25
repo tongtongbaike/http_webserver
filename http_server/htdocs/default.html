@@ -1,0 +1,51 @@
+<html>
+<head>
+	<h1>hello bit :) </h1>
+</head>
+<body>
+	<hr/>
+		<meta http-equiv=content-type content="text/html; charset=UTF-8">
+		<form action="../sql_api/sql_cgi_insert" value="POST">
+
+		注册信息：<br/>
+		姓名 <input type="text" name="name"/> <br/> 
+		学校 <input type="text" name="school"/> <br/>
+		爱好 <input type="text" name="hobby"/> <br/>
+		<input type="submit" value="注册"/> 
+		</form>
+	<hr/>	
+		查找选项：	
+		<form action="../sql_api/sql_cgi_select" method="GET">
+		<div>   
+			<select name="selectAge" id="selectAge">   
+			<option value="1" >姓名</option>   
+			<option value="2" >学校</option>   
+			<option value="3" >爱好</option>   
+		<input type="text" value="请输入查找条件" name="value">
+		<input type="submit" value="查找"/>
+		</form>
+	<hr/>
+		
+		<form action="../sql_api/sql_cgi_update" method="GET">	
+	<div>  
+		修改名：<input type="text" value="请输出修改对象名" name="name"/>  
+		修改项： 
+		<select name="selectAge" id="selectAge">   
+		<option value="1" >姓名</option>   
+		<option value="2" >学校</option>   
+		<option value="3" >爱好</option>   
+		<input type="text" value="请输入修改内容" name="value">
+
+		<input type="submit" value="修改"/> </form>
+
+	<hr/>
+	<form action="../sql_api/sql_cgi_delete" method="GET">
+		<div>
+			删除id：<input type="text" value="请输入删除id" name="value">
+			删除名：<input type="text" value="请输入名字" name="value">
+			<input type="submit" value="删除">
+		</form>
+		<hr/>
+	<p>pph http server</p>
+</body>
+</html>
