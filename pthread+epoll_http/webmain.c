@@ -2,8 +2,9 @@
 //实现基础的http请求行分析,返回对请的请求处理,cgi编程。。。。。。。。OK
 //实现mysql数据库的消息处理回显处理，了解数据库的底层实现 。。。。。。。。。OK
 //实现epoll多路复用版本,简单剖析epoll实现机制及源码...................OK
-//实现epoll/多线程版本，分流消息处理/消息回显.................
-//实现rio......................................
+//实现epoll/多线程版本，分流消息处理/消息回显.................设计思路错误，无法实现accept并发。任然需要继续学习，暂时放弃，先剖析nginx
+
+//实现rio......................................ok
 //
 #include "http_server.h"
 
@@ -274,7 +275,7 @@ int main(int argc,char *argv[])
 	int port = atoi(argv[2]);
 	
 	int listen_sock = server_listen(ip,port);
-
+	pid_t pid;
 	int epoll_fd = epoll_create(256);
 	if(epoll_fd < 0)
 	{
@@ -291,12 +292,18 @@ int main(int argc,char *argv[])
 	listen_fd->_ev_arry = ev_out;
 //	printf("success\n");
 	//3个线程
-	pthread_t sock_tid,read_tid,write_tid;
-	pthread_create(&sock_tid,NULL,epoll_wait_add,(void *)listen_fd);
-	pthread_create(&read_tid,NULL,read_deal,(void *)listen_fd);
+	//pthread_t sock_tid,read_tid,write_tid;
+	while(1)
+	{
+		pthread_t sock_tid,read_tid,write_tid;
+		pthread_create(&sock_tid,NULL,epoll_wait_add,(void *)listen_fd);
+		pthread_create(&read_tid,NULL,read_deal,(void *)listen_fd);
+		pthread_detach(read_tid);
+		pthread_join(sock_tid,NULL);
+	}
 //	pthread_create(&write_tid,NULL,write_deal,(void *)listen_fd);
-	pthread_join(sock_tid,NULL);
-	pthread_detach(read_tid);
+	//pthread_join(sock_tid,NULL);
+	//pthread_detach(read_tid);
 //	pthread_join(write_tid,NULL);
 
 	return 0;
